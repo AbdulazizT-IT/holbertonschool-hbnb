@@ -1,0 +1,63 @@
+user:
+
+id
+first name
+last name
+create_at
+update_at
+email
+password
+is_admin
+------------------
+register
+update profile
+delete profile
+
+
+---------------------------------------------------------------------------------------------
+
+Place:
+id
+create_at
+update_at
+title
+description
+price 
+latitude
+longitude
+owner
+amenities 
+---------------------
+create place
+delete place
+update place
+list placees 
+
+-----------------------------------------------------------------------------------------
+
+Review:
+id
+create at 
+update at
+rating
+comment
+place
+user
+----------------------
+crate review
+update review
+delete review
+list reviews 
+---------------------------------------------------------------------------------------
+
+Amenity:
+id
+create at 
+update at
+name
+description
+-------------------------
+create amenity
+delete amenity
+update amenity
+list amenityes 
