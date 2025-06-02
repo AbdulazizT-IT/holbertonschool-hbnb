@@ -29,6 +29,6 @@ To define the overall system architecture and business logic design before imple
 ---
 
 ## ✍️ Author
-[Abdulaziz - "username"](https://github.com/...)
-[Yasser - "username"](https://github.com/...)
+[Abdulaziz - "AbdulazizT-IT"](https://github.com/AbdulazizT-IT)
+[Yasser - "YuriSoma"](https://github.com/YuriSoma)
 [Meshari - M0simi](https://github.com/M0simi)
