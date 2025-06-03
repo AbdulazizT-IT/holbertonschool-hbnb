@@ -3,10 +3,15 @@ sequenceDiagram
     participant API
     participant UserService
     participant UserModel
+    participant Database
 
-    User->>API: POST /users/register (Invalid Email)
+    User->>API: POST /users/register (Valid Data)
     API->>UserService: register_user(user_data)
     UserService->>UserModel: validate(user_data)
-    UserModel-->>UserService: ValidationError ("Invalid email format")
-    UserService-->>API: raise error
-    API-->>User: 400 Bad Request ("Invalid email address")
+    UserModel-->>UserService: valid
+    UserService->>Database: check if email exists
+    Database-->>UserService: email not found
+    UserService->>Database: INSERT INTO users
+    Database-->>UserService: insert success
+    UserService-->>API: return success response
+    API-->>User: 201 Created ("User Registered Successfully")
