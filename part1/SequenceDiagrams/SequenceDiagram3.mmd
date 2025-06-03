@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant ReviewService
+    participant ReviewModel
+    participant Database
+
+    User->>API: POST /places/:id/reviews
+    API->>ReviewService: submit_review(place_id, review_data, user_id)
+    ReviewService->>ReviewModel: validate_review(data)
+    ReviewModel-->>ReviewService: valid
+    ReviewService->>Database: INSERT INTO reviews
+    Database-->>ReviewService: success
+    ReviewService-->>API: return success
+    API-->>User: 201 Created
