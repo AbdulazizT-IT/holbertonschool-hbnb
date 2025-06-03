@@ -1,15 +1,15 @@
 sequenceDiagram
     participant User
     participant API
-    participant ReviewService
-    participant ReviewModel
+    participant PlaceService
+    participant PlaceModel
     participant Database
 
-    User->>API: POST /places/:id/reviews
-    API->>ReviewService: submit_review(place_id, review_data, user_id)
-    ReviewService->>ReviewModel: validate_review(data)
-    ReviewModel->>Database: INSERT INTO reviews
-    Database-->>ReviewModel: success
-    ReviewModel-->>ReviewService: review saved
-    ReviewService-->>API: return success
-    API-->>User: 201 Created
+    User->>API: GET /places?city=NYC
+    API->>PlaceService: get_places(filter_criteria)
+    PlaceService->>PlaceModel: build_query(criteria)
+    PlaceModel->>Database: SELECT * FROM places WHERE city='NYC'
+    Database-->>PlaceModel: return places
+    PlaceModel-->>PlaceService: return places
+    PlaceService-->>API: return places
+    API-->>User: 200 OK + JSON list
