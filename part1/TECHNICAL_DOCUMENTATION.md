@@ -12,9 +12,31 @@ This documentation includes architectural diagrams, class structures, and intera
 
 ## 🏗 High-Level Architecture:
 
-This diagram illustrates the high-level structure of the HBnB application modules:
-
 ![Package Diagram](package_diagram.PNG)
+- 📝 Explanatory Notes
+  * Purpose:
+    - This diagram presents the high-level modular organization of the HBnB Evolution application.
+  
+  * Key Components:
+  
+    - auth: Manages user authentication and role validation.
+    
+    - user: Handles user profiles, registration, and updates.
+    
+    - place: Contains logic for creating, updating, and displaying place listings.
+    
+    - review: Manages user reviews and ratings for places.
+    
+    - amenity: Controls the definition and association of amenities to places.
+  
+  * Design Decisions:
+  
+    - Packages are separated by domain responsibility for modularity and maintainability.
+    - Each package encapsulates related classes and services to follow the Separation of Concerns principle.
+
+  * Role in Architecture:
+    - It defines the system’s modular structure and is foundational for understanding how responsibilities are distributed across the codebase.
+
 
 ## 🧠 Business Logic Layer:
 
