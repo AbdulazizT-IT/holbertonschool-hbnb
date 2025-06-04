@@ -2,6 +2,22 @@
 
 This folder contains all the technical documentation and diagrams for **Part 1** of the HBnB Evolution project.
 
+## 📝 Introduction
+
+Write a brief introduction for the document that explains its purpose and scope. Provide an overview of the HBnB project and the role of this technical document in guiding the implementation process.
+
+## 🏗 High-Level Architecture:
+
+Include the high-level package diagram and explain the layered architecture and facade pattern used.
+
+## 🧠 Business Logic Layer:
+
+Present the detailed class diagram, explaining the entities, their relationships, and how they fit into the business logic of the application.
+
+## 🔄 API Interaction Flow:
+
+Include the sequence diagrams for the selected API calls, providing explanations of the interactions and data flow between components.
+
 ## 📁 Contents
 
 - `README.md` — This file. Provides an overview of the folder contents.
