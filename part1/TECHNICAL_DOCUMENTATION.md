@@ -4,19 +4,49 @@ This folder contains all the technical documentation and diagrams for **Part 1**
 
 ## 📝 Introduction
 
-Write a brief introduction for the document that explains its purpose and scope. Provide an overview of the HBnB project and the role of this technical document in guiding the implementation process.
+This document provides comprehensive technical documentation for the HBnB Evolution application—a simplified, modular reimagining of an AirBnB-like platform. It is intended to serve as the architectural foundation for development, offering clear insight into system components, design rationale, and key interactions within the application.
+
+HBnB Evolution enables users to interact with a digital marketplace for property rentals. The documentation outlines the structure and logic that drive core features, including user interactions, data flow, and service relationships. It is designed to support both current development efforts and future scalability or integration.
+
+This documentation includes architectural diagrams, class structures, and interaction flows that collectively illustrate the design of HBnB Evolution. It aims to support developers, contributors, and technical stakeholders in understanding, maintaining, and extending the system efficiently.
 
 ## 🏗 High-Level Architecture:
 
-Include the high-level package diagram and explain the layered architecture and facade pattern used.
+This diagram illustrates the high-level structure of the HBnB application modules:
+
+![Package Diagram](package diagram.PNG)
 
 ## 🧠 Business Logic Layer:
 
-Present the detailed class diagram, explaining the entities, their relationships, and how they fit into the business logic of the application.
+The class diagram describes the relationships between system components:
+
+![Class Diagram](class_diagram.png)
 
 ## 🔄 API Interaction Flow:
 
-Include the sequence diagrams for the selected API calls, providing explanations of the interactions and data flow between components.
+### 📜👤 Sequence Diagram - User Registration
+
+This sequence diagram demonstrates the flow of a login request:
+
+![User_Registration](SequenceDiagrams/User_Registration.jpeg)
+
+### 📜🏠 Sequence Diagram - Place Creation
+
+This sequence diagram demonstrates the flow of a login request:
+
+![Place_Creation](SequenceDiagrams/Place_Creation.png)
+
+### 📜⭐ Sequence Diagram - Review Submission
+
+This sequence diagram demonstrates the flow of a login request:
+
+![Review_Submission](SequenceDiagrams/Review_Submission.png)
+
+### 📜🏘️ Sequence Diagram - Fetching a List of Places
+
+This sequence diagram demonstrates the flow of a login request:
+
+![Fetching_a_List_of_Places](SequenceDiagrams/Fetching_a_List_of_Places.png)
 
 ## 📁 Contents
 
