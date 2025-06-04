@@ -1,6 +1,6 @@
 # HBnB Evolution - Technical Documentation (Part 1)
 
-This folder contains all the technical documentation and diagrams for **Part 1** of the HBnB Evolution project.
+This directory contains all the technical documentation and diagrams for **Part 1** of the HBnB Evolution project.
 
 ## 📝 Introduction
 
