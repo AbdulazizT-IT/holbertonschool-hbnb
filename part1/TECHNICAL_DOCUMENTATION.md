@@ -40,62 +40,111 @@ This documentation includes architectural diagrams, class structures, and intera
 
 ## 🧠 Business Logic Layer:
 
-The class diagram describes the relationships between system components:
-
 ![Class Diagram](class_diagram.png)
+- 📝 Explanatory Notes
+  * Purpose:
+    - This diagram shows the object-oriented design of the application and illustrates class relationships and responsibilities.
+  
+  * Key Components:
+  
+    - User: Base entity with fields like id, name, email, and role.
+    - Place: Represents a rental listing with name, description, location, price, and associations to Amenity.
+    - Amenity: Describes available features (e.g., WiFi, parking) linked to places.
+    - Review: Linked to both User and Place, includes rating and comment.
+  
+  * Design Decisions:
+  
+    - Used composition (e.g., Place has Amenities) to show ownership relationships.
+    - Each package encapsulates related classes and services to follow the Separation of Concerns principle.
+
+  * Role in Architecture:
+    - This forms the backbone of the domain model, defining entities that are used across API endpoints and services.
 
 ## 🔄 API Interaction Flow:
 
-### 📜👤 Sequence Diagram - User Registration
-
-This sequence diagram demonstrates the flow of a login request:
-
+### 📜👤 User Registration Sequence Diagram
 ![User_Registration](SequenceDiagrams/User_Registration.jpeg)
+- 📝 Explanatory Notes
+  * Purpose:
+    - Illustrates the step-by-step interaction when a new user signs up for an account.
+  
+  * Key Components:
+  
+    - Client: Initiates the sign-up request.
+    - UserController: Accepts and validates input.
+    - UserService: Handles business logic such as hashing passwords and creating the user entity.
+    - UserRepository: Persists the new user to the database.
+  
+  * Design Decisions:
+  
+    - Password hashing is performed at the service layer to ensure separation of concerns.
+    - Immediate response includes a success message or error details, keeping the API RESTful and stateless.
 
-### 📜🏠 Sequence Diagram - Place Creation
+  * Role in Architecture:
+    - This flow establishes the entry point for new users, forming the foundation for authentication and user-specific operations later in the application
 
-This sequence diagram demonstrates the flow of a login request:
-
+### 📜🏠 Place Creation Sequence Diagram
 ![Place_Creation](SequenceDiagrams/Place_Creation.png)
+- 📝 Explanatory Notes
+  * Purpose:
+    - Shows how a user submits a request to create a new property listing.
+  
+  * Key Components:
+  
+    - Client: Sends place creation data (name, description, price, location, etc.).
+    - PlaceController: Validates the request and forwards it.
+    - PlaceService: Contains logic to validate ownership and format location data.
+    - PlaceRepository: Persists the new place entry to the database.
+  
+  * Design Decisions:
+  
+    - Place data is validated against user ownership to prevent unauthorized access.
+    - Location is stored using latitude/longitude to enable future geolocation queries.
 
-### 📜⭐ Sequence Diagram - Review Submission
+  * Role in Architecture:
+    - This flow handles core functionality for property listing, directly supporting the business model of HBnB Evolution.
 
-This sequence diagram demonstrates the flow of a login request:
-
+### 📜⭐ Review Submission Sequence Diagram
 ![Review_Submission](SequenceDiagrams/Review_Submission.png)
+- 📝 Explanatory Notes
+  * Purpose:
+    - Captures the interaction flow for submitting a review on a place.
+  
+  * Key Components:
+  
+    - Client: Submits a review containing a rating and comment.
+    - ReviewController: Validates review content and user authorization.
+    - ReviewService: Verifies that the user has visited the place, then creates the review.
+    - ReviewRepository: Saves the review to the database.
+  
+  * Design Decisions:
+  
+    - Includes a pre-check to ensure users can only review places they have stayed at.
+    - Ratings are validated for acceptable ranges (e.g., 1–5).
 
-### 📜🏘️ Sequence Diagram - Fetching a List of Places
+  * Role in Architecture:
+    - This diagram highlights user feedback mechanisms, crucial for building trust and transparency within the platform.
 
-This sequence diagram demonstrates the flow of a login request:
-
+### 📜🏘️ Fetching a List of Places Sequence Diagram
 ![Fetching_a_List_of_Places](SequenceDiagrams/Fetching_a_List_of_Places.png)
+- 📝 Explanatory Notes
+  * Purpose:
+    - Describes how the system handles a request to retrieve a list of places based on filters (e.g., location, price, amenities).
+  
+  * Key Components:
+  
+    - Client: Sends a request with optional filters.
+    - PlaceController: Parses query parameters and initiates the search.
+    - PlaceService: Applies business rules and formats results.
+    - PlaceRepository: Executes database queries with filter criteria.
+  
+  * Design Decisions:
+  
+    - Uses dynamic filtering to support flexible search options.
+    - Pagination and sorting can be included to optimize performance and usability.
 
-## 📁 Contents
-
-- `README.md` — This file. Provides an overview of the folder contents.
-- `package_diagram.PNG` — High-level **Package Diagram** showing the architecture layers:
-  - Presentation Layer
-  - Business Logic Layer
-  - Persistence Layer
-  - All connected through a Facade pattern.
-- `package_diagram.mmd` — Mermaid source file for the package diagram.
-- `class_diagram.png` — Detailed **Class Diagram** of the Business Logic layer, showing:
-  - Entities: User, Place, Review, Amenity
-  - Attributes, methods, and relationships.
-- `SequenceDiagrams/` — Folder containing **Sequence Diagrams** for selected API flows:
-  - User Registration
-  - Place Creation
-  - Review Submission
-  - Fetching Places
-
-## 📌 Objective
-
-The diagrams and notes here represent the foundational design and architecture of the HBnB system. This documentation is used to guide the implementation phase and ensure consistency across all development layers.
-
-## 🧠 How to Use
-
-- Use the diagrams to understand how each part of the system is structured and interacts with others.
-- Refer to these visuals when implementing models, APIs, and database schemas.
+  * Role in Architecture:
+    - This interaction supports discoverability and search, a key use case for end-users browsing available places.
 
 ## ✅ Status
 
