@@ -1,0 +1,15 @@
+📖 Introduction
+The HBnB Evolution project is a simplified clone of the AirBnB platform, designed to demonstrate the architecture and design of a full-featured web application. It manages key components such as users, places, reviews, and amenities.
+
+This document serves as a technical reference that outlines the system’s structure and interactions. It includes:
+
+A high-level architecture diagram to show the separation of concerns across the Presentation, Business Logic, and Persistence layers.
+
+A detailed class diagram explaining the relationships and attributes of core entities.
+
+Sequence diagrams that illustrate how different components communicate during key operations like user registration and place creation.
+
+The goal of this documentation is to provide a clear and organized blueprint that will guide the development and implementation phases of the HBnB system.
+
+
+
