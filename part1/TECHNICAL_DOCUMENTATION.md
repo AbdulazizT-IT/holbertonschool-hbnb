@@ -14,7 +14,7 @@ This documentation includes architectural diagrams, class structures, and intera
 
 This diagram illustrates the high-level structure of the HBnB application modules:
 
-![Package Diagram](package diagram.PNG)
+![Package Diagram](package_diagram.PNG)
 
 ## 🧠 Business Logic Layer:
 
