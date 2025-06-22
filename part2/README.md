@@ -4,19 +4,22 @@ This is a simple Flask-based REST API project.
 
 ## Project Structure
 
-part2/
-├── app/ # Application package
-│ ├── init.py # App factory and initialization
-│ ├── api/ # API routes
-│ │ └── v1/ # Version 1 of the API
-│ ├── models/ # Data models
-│ ├── services/ # Business logic
-│ └── persistence/ # Data storage and repository pattern
-│ └── repository.py
-├── config.py # Configuration settings
-├── requirements.txt # Python dependencies
-├── run.py # Entry point to run the app
-└── README.md # This file
+par2/
+| Path                     | Description                                         |
+|--------------------------|-----------------------------------------------------|
+| `app/`                   | Main application package containing all app logic.  |
+| `app/__init__.py`        | Initializes the app and sets up the app factory.    |
+| `app/api/`               | Contains API route modules.                         |
+| `app/api/v1/`            | Version 1 of the API endpoints.                     |
+| `app/models/`            | Contains data model classes.                        |
+| `app/services/`          | Business logic layer.                               |
+| `app/persistence/`       | Handles data storage logic (repository pattern).    |
+| `app/persistence/repository.py` | Implementation of in-memory repository.      |
+| `config.py`              | Application configuration settings.                |
+| `requirements.txt`       | Python dependencies file.                          |
+| `run.py`                 | Entry point to start the Flask application.         |
+| `README.md`              | Project documentation file.                         |
+
 
 app/
 | Path            | Description                                                  |
