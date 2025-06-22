@@ -12,6 +12,19 @@ user_model = api.model('User', {
 
 @api.route('/')
 class UserList(Resource):
+    @api.response(200, 'List of users retrieved successfully')
+    def get(self):
+        """Get list of all users"""
+        users = facade.user_repo.get_all()
+        result = []
+        for user in users:
+            result.append({
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            })
+        return result, 200
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
