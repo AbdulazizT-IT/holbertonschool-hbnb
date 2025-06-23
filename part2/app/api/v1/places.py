@@ -38,7 +38,7 @@ class PlaceList(Resource):
         data = request.get_json()
         try:
             place = facade.create_place(data)
-            return {"id": place.id, "name": place.name}, 201
+            return {"id": place.id, "title": place.title, "description": place.description, "price": place.price, "latitude": place.latitude, "longitude": place.longitude, "owner_id": place.owner_id}, 201
         except Exception as e:
             return {"error": str(e)}, 400
 
@@ -47,7 +47,7 @@ class PlaceList(Resource):
     def get(self):
         """Retrieve a list of all places"""
         places = facade.get_all_places()
-        return[{"id": a.id, "name": a.name} for a in places], 200
+        return[{"id": a.id, "title": a.title, "latitude": a.latitude, "longitude": a.longitude} for a in places], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -57,7 +57,7 @@ class PlaceResource(Resource):
         """Get place details by ID"""
         place = facade.get_place(place_id)
         if place:
-            return {"id": place.id, "name": place.name}, 200
+            return {"id": place.id, "title": place.title}, 200
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
