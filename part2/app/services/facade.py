@@ -39,6 +39,7 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, amenity_data)
         return self.get_amenity(amenity_id)
 
+    #place
 
     def create_place(self, place_data):
         place = Place(**place_data)
@@ -55,6 +56,7 @@ class HBnBFacade:
         self.place_repo.update(place_id, place_data)
         return self.get_place(place_id)
 
+    #reviews
 
     def create_review(self, review_data):
         review = Review(**review_data)

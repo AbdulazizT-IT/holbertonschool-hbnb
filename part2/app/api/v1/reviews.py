@@ -26,8 +26,8 @@ class ReviewList(Resource):
                 "id": review.id,
                 "text": review.text,
                 "rating": review.rating,
-                "user_id": review.user_id,
-                "place_id": review.place_id
+                "user_id": review.user,
+                "place_id": review.place
             }, 201
         except Exception as e:
             return {"error": str(e)}, 400
@@ -40,8 +40,8 @@ class ReviewList(Resource):
             "id": r.id,
             "text": r.text,
             "rating": r.rating,
-            "user_id": r.user_id,
-            "place_id": r.place_id
+            "user_id": r.user,
+            "place_id": r.place
         } for r in reviews], 200
 
 @api.route('/<review_id>')
@@ -57,8 +57,8 @@ class ReviewResource(Resource):
             "id": review.id,
             "text": review.text,
             "rating": review.rating,
-            "user_id": review.user_id,
-            "place_id": review.place_id
+            "user_id": review.user,
+            "place_id": review.place
         }, 200
 
     @api.expect(review_model)
@@ -77,8 +77,8 @@ class ReviewResource(Resource):
                 "id": updated.id,
                 "text": updated.text,
                 "rating": updated.rating,
-                "user_id": updated.user_id,
-                "place_id": updated.place_id
+                "user_id": updated.user,
+                "place_id": updated.place
             }, 200
         except Exception as e:
             return {"error": str(e)}, 400
@@ -107,6 +107,6 @@ class PlaceReviewList(Resource):
             "id": r.id,
             "text": r.text,
             "rating": r.rating,
-            "user_id": r.user_id,
-            "place_id": r.place_id
+            "user_id": r.user,
+            "place_id": r.place
         } for r in reviews], 200
