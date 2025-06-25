@@ -66,7 +66,24 @@ class PlaceResource(Resource):
         """Get place details by ID"""
         place = facade.get_place(place_id)
         if place:
-            return {"id": place.id, "title": place.title}, 200
+            return {"id": place.id,
+            "title": place.title,
+            "description": place.description,
+            "latitude": place.latitude,
+            "longitude": place.longitude,
+            "owner": {
+                "id": place.owner_id.id,
+                "first_name": place.owner_id.first_name,
+                "last_name": place.owner_id.last_name,
+                "email": place.owner_id.email
+            },
+            "amenities": [
+                {
+                    "id": a.id,
+                    "name": a.name
+                } for a in place.amenities
+            ]
+            }, 200
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
