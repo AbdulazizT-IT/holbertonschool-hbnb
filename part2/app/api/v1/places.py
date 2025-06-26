@@ -56,7 +56,29 @@ class PlaceList(Resource):
     def get(self):
         """Retrieve a list of all places"""
         places = facade.get_all_places()
-        return[{"id": a.id, "title": a.title, "latitude": a.latitude, "longitude": a.longitude} for a in places], 200
+        result = []
+        for place in places:
+            owner = facade.get_user(place.owner_id)
+            amenities = []
+            for amenity in place.amenities:
+                amenities.append({
+                    "id": amenity.id,
+                    "name": amenity.name
+                })
+        result.append({
+            "id": place.id,
+            "title": place.title,
+            "latitude": place.latitude,
+            "longitude": place.longitude,
+            "owner": {
+                "id": owner.id if owner else None,
+                "first_name": owner.first_name if owner else None,
+                "last_name": owner.last_name if owner else None,
+                "email": owner.email if owner else None
+            },
+            "amenities": amenities
+        })
+        return result, 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -65,17 +87,22 @@ class PlaceResource(Resource):
     def get(self, place_id):
         """Get place details by ID"""
         place = facade.get_place(place_id)
-        if place:
-            return {"id": place.id,
+        if not place:
+            return {"error": "Place not found"}, 404
+
+        owner = place.owner
+        
+        return {
+            "id": place.id,
             "title": place.title,
             "description": place.description,
             "latitude": place.latitude,
             "longitude": place.longitude,
             "owner": {
-                "id": place.owner_id.id,
-                "first_name": place.owner_id.first_name,
-                "last_name": place.owner_id.last_name,
-                "email": place.owner_id.email
+                "id": owner.id,
+                "first_name": owner.first_name,
+                "last_name": owner.last_name,
+                "email": owner.email
             },
             "amenities": [
                 {
@@ -97,7 +124,7 @@ class PlaceResource(Resource):
             return {"error": "Place not found"}, 404
 
         try:
-            updated = facade.update_place(place_id, place_data)
-            return {"id": updated.id, "name": updated.name}, 200
+            updated = facade.update_place(place_id, data)
+            return {"id": updated.id, "name": updated.title}, 200
         except Exception as e:
             return {"error": str(e)}, 400

@@ -47,7 +47,14 @@ class HBnBFacade:
         return place
 
     def get_place(self, place_id):
-        return self.place_repo.get(place_id)
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+
+        owner = self.user_repo.get(place.owner_id)
+        place.owner = owner
+
+        return place
 
     def get_all_places(self):
         return self.place_repo.get_all()
@@ -59,7 +66,18 @@ class HBnBFacade:
     #reviews
 
     def create_review(self, review_data):
-        review = Review(**review_data)
+        user = self.get_user(review_data.get('user_id'))
+        place = self.get_place(review_data.get('place_id'))
+
+        if not user or not place:
+            raise ValueError("User or Place not found")
+
+        review = Review(
+            text=review_data.get('text'),
+            rating=review_data.get('rating'),
+            user=user,
+            place=place
+        )
         self.review_repo.add(review)
         return review
 
