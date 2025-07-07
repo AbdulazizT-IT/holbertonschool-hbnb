@@ -44,7 +44,7 @@ class UserList(Resource):
 
         # hash the password for user
         hashed_password = User.hash_password(user_data["password"])
-        user_data["password"] = hashedpassword
+        user_data["password"] = hashed_password
 
         new_user = facade.create_user(user_data)
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
