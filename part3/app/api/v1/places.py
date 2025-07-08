@@ -71,18 +71,18 @@ class PlaceList(Resource):
                     "id": amenity.id,
                     "name": amenity.name
                 })
-        result.append({
-            "id": place.id,
-            "title": place.title,
-            "latitude": place.latitude,
-            "longitude": place.longitude,
-            "owner": {
-                "id": owner.id if owner else None,
-                "first_name": owner.first_name if owner else None,
-                "last_name": owner.last_name if owner else None,
-                "email": owner.email if owner else None
-            },
-            "amenities": amenities
+            result.append({
+                "id": place.id,
+                "title": place.title,
+                "latitude": place.latitude,
+                "longitude": place.longitude,
+                "owner": {
+                    "id": owner.id if owner else None,
+                    "first_name": owner.first_name if owner else None,
+                    "last_name": owner.last_name if owner else None,
+                    "email": owner.email if owner else None
+                },
+                "amenities": amenities
         })
         return result, 200
 

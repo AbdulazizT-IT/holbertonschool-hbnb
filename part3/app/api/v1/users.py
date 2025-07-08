@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from app.models.user import User
+from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
@@ -12,6 +13,12 @@ user_model = api.model('User', {
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
     'password': fields.String(required=True, description='Password of the user')
+})
+
+# A model to update a user without requiring other attributes
+user_update_model = api.model('UserUpdate', {
+    'first_name': fields.String(description='First name of the user'),
+    'last_name': fields.String(description='Last name of the user')
 })
 
 @api.route('/')
@@ -70,14 +77,14 @@ class UserResource(Resource):
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
 
     @jwt_required()
-    @api.expect(user_model, validate=True)
+    @api.expect(user_update_model, validate=True)
     @api.response(200, 'User successfully updated')
     @api.response(404, 'User not found')
     @api.response(400, 'Email already registered by another user')
     def put(self, user_id):
         """Update user details"""
         current_user = get_jwt_identity()
-        if current_user != user_id['id']:
+        if current_user != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         data = request.get_json()
