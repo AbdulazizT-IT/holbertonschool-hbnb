@@ -49,7 +49,7 @@ class PlaceList(Resource):
         """Register a new place"""
         data = request.get_json()
         current_user = get_jwt_identity()
-        data['owner_id'] = current_user['id']
+        data['owner_id'] = current_user
 
         try:
             place = facade.create_place(data)
@@ -126,17 +126,33 @@ class PlaceResource(Resource):
 
     def put(self, place_id):
         """Update a place's information"""
-        data = request.get_json()
+
         place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 404
 
         current_user = get_jwt_identity()
-        if place.owner_id != current_user['id']:
+        if place.owner_id != current_user:
             return {"error": "Unauthorized to update this place"}, 403
+
+        data = request.get_json()
 
         try:
             updated = facade.update_place(place_id, data)
             return {"id": updated.id, "name": updated.title}, 200
         except Exception as e:
             return {"error": str(e)}, 400
+
+@api.route('/')
+class PublicPlaceList(Resource):
+    def get(self):
+        places = facade.get_all_places()
+        return marshal(places, place_model), 200
+
+@api.route('/<place_id>')
+class PublicPlaceResource(Resource):
+    def get(self, place_id):
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'Place not found'}, 404
+        return marshal(place, place_model), 200

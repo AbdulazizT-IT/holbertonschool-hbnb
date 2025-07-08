@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('reviews', description='Review operations')
 
@@ -17,9 +18,18 @@ class ReviewList(Resource):
     @api.expect(review_model)
     @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
         """Register a new review"""
+        current_user = get_jwt_identity()
         data = request.get_json()
+        place = facade.get_place(data['place_id'])
+
+        if place.owner_id == current_user['id']:
+            return {'error': 'You cannot review your own place'}, 400
+
+        data['user_id'] = current_user['id']
+
         try:
             review = facade.create_review(data)
             return {
@@ -65,12 +75,20 @@ class ReviewResource(Resource):
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def put(self, review_id):
         """Update a review's information"""
-        data = request.get_json()
+        current_user = get_jwt_identity()
         review = facade.get_review(review_id)
+
         if not review:
             return {"error": "Review not found"}, 404
+
+        if review.user_id != current_user['id']:
+            return {'error': 'Unauthorized action'}, 403
+
+        data = request.get_json()
+
         try:
             updated = facade.update_review(review_id, data)
             return {
@@ -85,11 +103,18 @@ class ReviewResource(Resource):
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
+    @jwt_required()
     def delete(self, review_id):
         """Delete a review"""
+        current_user = get_jwt_identity()
         review = facade.get_review(review_id)
+
         if not review:
             return {"error": "Review not found"}, 404
+
+        if review.user_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+
         facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}, 200
 

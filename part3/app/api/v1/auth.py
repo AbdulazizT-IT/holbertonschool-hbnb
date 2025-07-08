@@ -1,7 +1,8 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import create_access_token
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity,get_jwt
+
 
 api = Namespace('auth', description='Authentication operations')
 
@@ -26,7 +27,9 @@ class Login(Resource):
             return {'error': 'Invalid credentials'}, 401
 
         # Step 3: Create a JWT token with the user's id and is_admin flag
-        access_token = create_access_token(identity={'id': str(user.id), 'is_admin': user.is_admin})
+        access_token = create_access_token(
+            identity=str(user.id),
+            additional_claims={'is_admin': user.is_admin})
         
         # Step 4: Return the JWT token to the client
         return {'access_token': access_token}, 
@@ -36,5 +39,8 @@ class ProtectedResource(Resource):
     @jwt_required()
     def get(self):
         """A protected endpoint that requires a valid JWT token"""
-        current_user = get_jwt_identity()  # Retrieve the user's identity from the token
-        return {'message': f'Hello, user {current_user["id"]}'}, 200
+        current_user_id = get_jwt_identity()  # Retrieve the user's identity from the token
+        claims = get_jwt()
+        is_admin = claims.get("is_admin", False)
+        return {'message': f'Hello, user {current_user_id}',
+        }, 200
