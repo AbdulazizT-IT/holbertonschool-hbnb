@@ -58,7 +58,7 @@ class UserList(Resource):
         user_data["password"] = hashed_password
 
         new_user = facade.create_user(user_data)
-        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
+        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email, 'is_admin': new_user.is_admin}, 201
 
 
 @api.route('/<user_id>')
@@ -85,13 +85,17 @@ class UserResource(Resource):
     @api.response(400, 'Email already registered by another user')
     def put(self, user_id):
         """Update user details"""
-        current_user = get_jwt_identity()
-        if not current_user.get('is_admin'):
+        user_id_token = get_jwt_identity()
+        user_from_token = facade.get_user(user_id_token)
+        if not user_from_token or not user_from_token.is_admin:
             return {'error': 'Unauthorized action'}, 403
 
         data = request.get_json()
-        if 'email' in data or 'password' in data or current_user.get('is_admin') == False:
-            return {'error': 'You cannot modify email or password'}, 400
+        if not user_from_token.is_admin:
+            # Non-admins cannot change email or password
+            if 'email' in data or 'password' in data:
+                return {'error': 'You cannot modify email or password'}, 400
+
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404

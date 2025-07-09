@@ -2,6 +2,7 @@ from flask_restx import Namespace, Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 from flask import request
+from app.models.user import User
 
 api = Namespace('admin', description='Admin operations')
 
@@ -9,8 +10,9 @@ api = Namespace('admin', description='Admin operations')
 class AdminUserCreate(Resource):
     @jwt_required()
     def post(self):
-        current_user = get_jwt_identity()
-        if not current_user.get('is_admin'):
+        user_id = get_jwt_identity()
+        user = facade.get_user(user_id)
+        if not user or not user.is_admin:
             return {'error': 'Admin privileges required'}, 403
 
         user_data = request.json
@@ -34,7 +36,8 @@ class AdminUserCreate(Resource):
             'id': new_user.id,
             'first_name': new_user.first_name,
             'last_name': new_user.last_name,
-            'email': new_user.email
+            'email': new_user.email,
+            'is_admin': new_user.is_admin
         }, 201
 
 @api.route('/users/<user_id>')

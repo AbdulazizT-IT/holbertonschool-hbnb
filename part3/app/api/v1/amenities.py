@@ -64,25 +64,21 @@ class AmenityResource(Resource):
 class AdminAmenityCreate(Resource):
     @jwt_required()
     def post(self):
-        current_user = get_jwt_identity()
-        if not current_user.get('is_admin'):
+        user_id = get_jwt_identity()
+        user = facade.get_user(user_id)
+        if not user or not user.is_admin:
             return {'error': 'Admin privileges required'}, 403
 
-        # Logic to create a new amenity
         data = request.get_json()
         name = data.get('name')
-
         if not name:
             return {'error': 'Amenity name is required'}, 400
 
-        # validate if the amenity exist
         existing_amenity = facade.get_amenity_by_name(name)
         if existing_amenity:
             return {'error': 'Amenity already exists'}, 400
 
-        # create a new amenity 
         new_amenity = facade.create_amenity(data)
-
         return {
             'id': new_amenity.id,
             'name': new_amenity.name
@@ -92,18 +88,17 @@ class AdminAmenityCreate(Resource):
 class AdminAmenityModify(Resource):
     @jwt_required()
     def put(self, amenity_id):
-        current_user = get_jwt_identity()
-        if not current_user.get('is_admin'):
+        user_id = get_jwt_identity()
+        user = facade.get_user(user_id)
+        if not user or not user.is_admin:
             return {'error': 'Admin privileges required'}, 403
 
-        # Logic to update an amenity
         data = request.get_json()
         name = data.get('name')
 
         amenity = facade.get_amenity(amenity_id)
         if not amenity:
             return {'error': 'Amenity not found'}, 404
-
 
         if name:
             existing_amenity = facade.get_amenity_by_name(name)
@@ -112,12 +107,7 @@ class AdminAmenityModify(Resource):
 
             amenity.name = name
 
-        # تحديث حقول أخرى إذا موجودة (لو في)
-        # مثلاً إذا عندك وصف أو غيره:
-        # amenity.description = data.get('description', amenity.description)
-
-        facade.amenity_repo.update(amenity_id, data)  # تأكد من وجود دالة التحديث أو استبدلها
-
+        facade.amenity_repo.update(amenity_id, data)
         return {
             'id': amenity.id,
             'name': amenity.name

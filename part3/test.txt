@@ -1,0 +1,27 @@
+curl -X POST http://localhost:5000/api/v1/users/   -H "Content-Type: application/json"   -d '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com","password":"test","is_admin":true}'
+
+curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" -H "Content-Type: application/json" -d '{
+  "email": "john.doe@example.com",
+  "password": "test"
+}'
+
+curl -X POST "http://127.0.0.1:5000/api/v1/admin/users/" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MjA5NzI3OCwianRpIjoiNTAzY2VlNmQtZTM3Zi00OGQyLThiNTgtMTY0NTU3NDI1Yjg4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImY1NGFkZTMzLWQxZDItNDJmMC1hODVkLTIwYzk5MDA5MjIwMSIsIm5iZiI6MTc1MjA5NzI3OCwiY3NyZiI6ImIyMTAxNTY4LTc2ZjAtNDY5ZS1hODZhLTQ1ZDFmZGM2NWQ5YiIsImV4cCI6MTc1MjA5ODE3OCwiaXNfYWRtaW4iOnRydWV9.Yi_rRZIjuEfrVEajgy8hzF3J9xZfAmcQLjDnmovDf6k" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "New",
+    "last_name": "User",
+    "email": "newuser@example.com",
+    "password": "newpassword",
+    "is_admin": false
+  }'
+
+
+
+curl -X PUT "http://127.0.0.1:5000/api/v1/users/6983f827-4e6a-4c0b-9c75-8a49cbaa1fcd" -d '{"email": "updatedemail@example.com"}' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MjA5NzI3OCwianRpIjoiNTAzY2VlNmQtZTM3Zi00OGQyLThiNTgtMTY0NTU3NDI1Yjg4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImY1NGFkZTMzLWQxZDItNDJmMC1hODVkLTIwYzk5MDA5MjIwMSIsIm5iZiI6MTc1MjA5NzI3OCwiY3NyZiI6ImIyMTAxNTY4LTc2ZjAtNDY5ZS1hODZhLTQ1ZDFmZGM2NWQ5YiIsImV4cCI6MTc1MjA5ODE3OCwiaXNfYWRtaW4iOnRydWV9.Yi_rRZIjuEfrVEajgy8hzF3J9xZfAmcQLjDnmovDf6k" -H "Content-Type: application/json"
+
+curl -X POST "http://127.0.0.1:5000/api/v1/amenities/" -d '{"name": "Swimming Pool"}' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MjA5Nzc1NCwianRpIjoiNDcyYmY5ZmEtZGVkNC00YzQwLWI0M2YtMTJiNWY5N2JhYzJhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjJmNTA3OWVjLTdkMjktNDk0Zi05OTJkLTU0NGU4NDg0YzY0YyIsIm5iZiI6MTc1MjA5Nzc1NCwiY3NyZiI6ImJjMDY4N2ZlLWJjNDUtNDE3ZC04MGYzLWI0NzBlM2UyOWZiOSIsImV4cCI6MTc1MjA5ODY1NCwiaXNfYWRtaW4iOnRydWV9.OxGucBkaDRq_A8XKsnZARrv6AdLtZhEvXZQY3o5FVJE" -H "Content-Type: application/json"
+
+
+curl -X PUT "http://127.0.0.1:5000/api/v1/amenities/10da3352-b07e-49c3-9a1c-5afb463c1846" -d '{"name": "Updated Amenity"}' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MjA5Nzc1NCwianRpIjoiNDcyYmY5ZmEtZGVkNC00YzQwLWI0M2YtMTJiNWY5N2JhYzJhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjJmNTA3OWVjLTdkMjktNDk0Zi05OTJkLTU0NGU4NDg0YzY0YyIsIm5iZiI6MTc1MjA5Nzc1NCwiY3NyZiI6ImJjMDY4N2ZlLWJjNDUtNDE3ZC04MGYzLWI0NzBlM2UyOWZiOSIsImV4cCI6MTc1MjA5ODY1NCwiaXNfYWRtaW4iOnRydWV9.OxGucBkaDRq_A8XKsnZARrv6AdLtZhEvXZQY3o5FVJE" -H "Content-Type: application/json"
+
