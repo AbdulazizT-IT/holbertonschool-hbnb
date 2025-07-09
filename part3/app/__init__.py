@@ -9,6 +9,7 @@ from flask_bcrypt import Bcrypt
 from config import Config, DevelopmentConfig
 from flask_jwt_extended import JWTManager
 from app.api.v1.auth import api as auth_ns
+from app.api.v1.admin import api as admin_ns
 
 jwt = JWTManager()
 bcrypt = Bcrypt()
@@ -26,6 +27,8 @@ def create_app(config_class=DevelopmentConfig):
     api.add_namespace(places_ns, path='/api/v1/places')
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
     api.add_namespace(auth_ns, path='/api/v1/auth')
+    api.add_namespace(admin_ns, path='/api/v1/admin')
+
 
     bcrypt.init_app(app)
     jwt.init_app(app)

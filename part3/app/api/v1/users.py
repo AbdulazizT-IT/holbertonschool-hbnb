@@ -7,12 +7,14 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('users', description='User operations')
 
+
 # Define the user model for input validation and documentation
 user_model = api.model('User', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=True, description='Password of the user')
+    'password': fields.String(required=True, description='Password of the user'),
+    'is_admin': fields.Boolean(required=True, description="is_admin")
 })
 
 # A model to update a user without requiring other attributes
@@ -84,11 +86,11 @@ class UserResource(Resource):
     def put(self, user_id):
         """Update user details"""
         current_user = get_jwt_identity()
-        if current_user != user_id:
+        if not current_user.get('is_admin'):
             return {'error': 'Unauthorized action'}, 403
 
         data = request.get_json()
-        if 'email' in data or 'password' in data:
+        if 'email' in data or 'password' in data or current_user.get('is_admin') == False:
             return {'error': 'You cannot modify email or password'}, 400
         user = facade.get_user(user_id)
         if not user:
@@ -112,3 +114,4 @@ class UserResource(Resource):
             'last_name': user.last_name,
             'email': user.email
         }, 200
+

@@ -2,6 +2,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from app.services import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('amenities', description='Amenity operations')
 
@@ -58,4 +59,68 @@ class AmenityResource(Resource):
             return {"id": updated.id, "name": updated.name}, 200
         except Exception as e:
             return {"error": str(e)}, 400
+
+@api.route('/amenities/')
+class AdminAmenityCreate(Resource):
+    @jwt_required()
+    def post(self):
+        current_user = get_jwt_identity()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        # Logic to create a new amenity
+        data = request.get_json()
+        name = data.get('name')
+
+        if not name:
+            return {'error': 'Amenity name is required'}, 400
+
+        # validate if the amenity exist
+        existing_amenity = facade.get_amenity_by_name(name)
+        if existing_amenity:
+            return {'error': 'Amenity already exists'}, 400
+
+        # create a new amenity 
+        new_amenity = facade.create_amenity(data)
+
+        return {
+            'id': new_amenity.id,
+            'name': new_amenity.name
+        }, 201
+
+@api.route('/amenities/<amenity_id>')
+class AdminAmenityModify(Resource):
+    @jwt_required()
+    def put(self, amenity_id):
+        current_user = get_jwt_identity()
+        if not current_user.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        # Logic to update an amenity
+        data = request.get_json()
+        name = data.get('name')
+
+        amenity = facade.get_amenity(amenity_id)
+        if not amenity:
+            return {'error': 'Amenity not found'}, 404
+
+
+        if name:
+            existing_amenity = facade.get_amenity_by_name(name)
+            if existing_amenity and existing_amenity.id != amenity_id:
+                return {'error': 'Amenity name already in use'}, 400
+
+            amenity.name = name
+
+        # تحديث حقول أخرى إذا موجودة (لو في)
+        # مثلاً إذا عندك وصف أو غيره:
+        # amenity.description = data.get('description', amenity.description)
+
+        facade.amenity_repo.update(amenity_id, data)  # تأكد من وجود دالة التحديث أو استبدلها
+
+        return {
+            'id': amenity.id,
+            'name': amenity.name
+        }, 200
+
 

@@ -156,3 +156,40 @@ class PublicPlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
         return marshal(place, place_model), 200
+
+@api.route('/places/<place_id>')
+class AdminPlaceModify(Resource):
+    @jwt_required()
+    def put(self, place_id):
+        current_user = get_jwt_identity()
+
+        # Set is_admin default to False if not exists
+        is_admin = current_user.get('is_admin', False)
+        user_id = current_user.get('id')
+
+        place = facade.get_place(place_id)
+        if not is_admin and place.owner_id != user_id:
+            return {'error': 'Unauthorized action'}, 403
+
+        # Logic to update the place
+        # إذا المستخدم مو أدمن ومو مالك المكان، يمنع التعديل
+        if not is_admin and place.owner_id != user_id:
+            return {'error': 'Unauthorized action'}, 403
+
+        data = request.get_json()
+
+        # تحديث حقول المكان حسب البيانات المدخلة
+        place.name = data.get('name', place.name)
+        place.description = data.get('description', place.description)
+        place.address = data.get('address', place.address)
+        # ... أضف أي حقول أخرى تحتاج تحديثها
+
+        # حفظ التغييرات - تأكد من وجود دالة تحديث أو حفظ مناسبة في facade
+        facade.place_repo.update(place_id, data)
+
+        return {
+            'id': place.id,
+            'name': place.name,
+            'description': place.description,
+            'address': place.address
+        }, 200
