@@ -54,12 +54,20 @@ class UserList(Resource):
             return {'error': 'Email already registered'}, 400
 
         # hash the password for user
-        hashed_password = User.hash_password(user_data["password"])
+        hashed_password = user.hash_password(user_data["password"])
         user_data["password"] = hashed_password
 
         new_user = facade.create_user(user_data)
-        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email, 'is_admin': new_user.is_admin}, 201
 
+        if not new_user:
+            return {'error': 'User creation failed'}, 500
+        return {
+        'id': new_user.id,
+        'first_name': new_user.first_name,
+        'last_name': new_user.last_name,
+        'email': new_user.email,
+        'is_admin': new_user.is_admin
+        }, 201
 
 @api.route('/<user_id>')
 class UserResource(Resource):
@@ -87,7 +95,7 @@ class UserResource(Resource):
         """Update user details"""
         user_id_token = get_jwt_identity()
         user_from_token = facade.get_user(user_id_token)
-        if not user_from_token or not user_from_token.is_admin:
+        if str(user_id_token) != str(user_id) and not user_from_token.is_admin:
             return {'error': 'Unauthorized action'}, 403
 
         data = request.get_json()
@@ -100,7 +108,8 @@ class UserResource(Resource):
         if not user:
             return {'error': 'User not found'}, 404
 
-        data = api.payload
+
+
 
         if 'email' in data:
             existing_user = facade.get_user_by_email(data['email'])

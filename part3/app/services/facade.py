@@ -27,8 +27,8 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_user_by_email(email)
-
+        user = self.session.query(User).filter_by(email=email).first()
+        return user
     # Amenity operations
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
