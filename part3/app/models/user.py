@@ -14,8 +14,8 @@ class User(BaseModel):
     is_admin = db.Column(db.Boolean, default=False)
 
     def hash_password(self, password):
-        """Hashes the password and returns it."""
-        return bcrypt.generate_password_hash(password).decode('utf-8')
+        """Hashes the password and sets it to the instance."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
